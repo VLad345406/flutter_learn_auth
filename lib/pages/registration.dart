@@ -1,13 +1,43 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class RegistrationPage extends StatelessWidget
-{
+class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
 
   @override
-  Widget build(BuildContext context){
+  State<RegistrationPage> createState() => _RegistrationPageState();
+}
 
+class _RegistrationPageState extends State<RegistrationPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  Future registration() async {
+    if (emailController.text == '' ||
+        passwordController.text == '' ||
+        confirmPasswordController.text == '') {
+      print('Error!');
+    } else if (passwordController.text != confirmPasswordController.text) {
+      print('Wrong confirm password');
+    } else {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/main', (Route<dynamic> route) => false);
+      }
+      catch (e) {
+        print('Error registration!');
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -30,8 +60,8 @@ class RegistrationPage extends StatelessWidget
               top: 16,
             ),
             child: TextFormField(
-              onChanged: (value){
-              },
+              controller: emailController,
+              onChanged: (value) {},
               enableSuggestions: false,
               autocorrect: false,
               style: GoogleFonts.roboto(
@@ -67,8 +97,8 @@ class RegistrationPage extends StatelessWidget
               top: 16,
             ),
             child: TextFormField(
-              onChanged: (value){
-              },
+              controller: passwordController,
+              onChanged: (value) {},
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
@@ -105,8 +135,8 @@ class RegistrationPage extends StatelessWidget
               top: 16,
             ),
             child: TextFormField(
-              onChanged: (value){
-              },
+              controller: confirmPasswordController,
+              onChanged: (value) {},
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
@@ -137,20 +167,22 @@ class RegistrationPage extends StatelessWidget
             ),
           ),
           Container(
-            height: 50,
+            height: 60,
             width: screenWidth - 32,
             margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
             decoration: BoxDecoration(
               border: Border.all(width: 2),
+              color: Colors.black,
             ),
             child: TextButton(
-              onPressed: (){
+              onPressed: registration,
+              /*(){
                 Navigator.pushNamedAndRemoveUntil(context, '/main', (Route<dynamic> route) => false);
-              },
+              },*/
               child: Text(
-                'Log in',
+                'Registration',
                 style: GoogleFonts.roboto(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
                 ),

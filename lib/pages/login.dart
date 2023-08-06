@@ -15,10 +15,22 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    if (emailController.text == '' || passwordController.text == '') {
+      print('Error!');
+    }
+    else {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/main', (Route<dynamic> route) => false);
+      }
+      catch (e) {
+        print('Error login!');
+      }
+    }
   }
 
   @override
