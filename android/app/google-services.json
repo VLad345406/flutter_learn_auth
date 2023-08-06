@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "941820417630",
+    "project_id": "learn-auth-68d76",
+    "storage_bucket": "learn-auth-68d76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:941820417630:android:b4680450e4f9738b0a06cf",
+        "android_client_info": {
+          "package_name": "com.example.learn_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "941820417630-mp9bdvn4jp1j8rnp9j6rv45hmcpppnc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsUz13xLfMwmPaDBivMjDZGq-nZwQyQdg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "941820417630-mp9bdvn4jp1j8rnp9j6rv45hmcpppnc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
