@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -5,12 +7,16 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context){
-
-    final screenWidth = MediaQuery.of(context).size.width;
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme
+          .of(context)
+          .primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Learn auth'),
@@ -26,8 +32,12 @@ class HomePage extends StatelessWidget {
               border: Border.all(width: 2),
             ),
             child: TextButton(
-              onPressed: (){
-                Navigator.pushNamed(context, '/login');
+              onPressed: () {
+                //Navigator.pushNamed(context, '/login');
+                FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: "vlad.piermiakov@gmail.com",
+                    password: "123456"
+                );
               },
               child: Text(
                 'Log in',
@@ -50,7 +60,7 @@ class HomePage extends StatelessWidget {
               border: Border.all(width: 2),
             ),
             child: TextButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.pushNamed(context, '/registration');
               },
               child: Text(

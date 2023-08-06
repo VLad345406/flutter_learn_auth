@@ -1,12 +1,36 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:learn_auth/pages/main_page.dart';
+//import 'package:learn_auth/pages/main_page.dart';
 
-class LoginPage extends StatelessWidget
-{
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
-  Widget build(BuildContext context){
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -29,8 +53,8 @@ class LoginPage extends StatelessWidget
               top: 16,
             ),
             child: TextFormField(
-              onChanged: (value){
-              },
+              controller: emailController,
+              onChanged: (value) {},
               enableSuggestions: false,
               autocorrect: false,
               style: GoogleFonts.roboto(
@@ -66,8 +90,8 @@ class LoginPage extends StatelessWidget
               top: 16,
             ),
             child: TextFormField(
-              onChanged: (value){
-              },
+              controller: passwordController,
+              onChanged: (value) {},
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
@@ -105,9 +129,10 @@ class LoginPage extends StatelessWidget
               border: Border.all(width: 2),
             ),
             child: TextButton(
-              onPressed: (){
+              onPressed: signIn,
+              /*(){
                 Navigator.pushNamedAndRemoveUntil(context, '/main', (Route<dynamic> route) => false);
-              },
+              },*/
               child: Text(
                 'Log in',
                 style: GoogleFonts.roboto(
