@@ -36,6 +36,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
+  bool _isObscure1 = true;
+  bool _isObscure2 = true;
+
+  void showPassword1() {
+    setState(() {
+      _isObscure1 = !_isObscure1;
+    });
+  }
+  void showPassword2() {
+    setState(() {
+      _isObscure2 = !_isObscure2;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -99,7 +113,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             child: TextFormField(
               controller: passwordController,
               onChanged: (value) {},
-              obscureText: true,
+              obscureText: _isObscure1,
               enableSuggestions: false,
               autocorrect: false,
               style: GoogleFonts.roboto(
@@ -108,18 +122,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
               ),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isObscure1 ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.black,
+                  ),
+                  onPressed: showPassword1,
+                ),
                 labelText: 'Password',
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   color: Colors.black,
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.zero),
                   borderSide: BorderSide(
                     width: 2,
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.zero),
                   borderSide: BorderSide(
                     width: 2,
@@ -137,7 +158,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             child: TextFormField(
               controller: confirmPasswordController,
               onChanged: (value) {},
-              obscureText: true,
+              obscureText: _isObscure2,
               enableSuggestions: false,
               autocorrect: false,
               style: GoogleFonts.roboto(
@@ -146,18 +167,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
               ),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isObscure2 ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.black,
+                  ),
+                  onPressed: showPassword2,
+                ),
                 labelText: 'Confirm password',
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   color: Colors.black,
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.zero),
                   borderSide: BorderSide(
                     width: 2,
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.zero),
                   borderSide: BorderSide(
                     width: 2,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_auth/pages/home_page.dart';
@@ -23,12 +24,42 @@ class LearnAuth extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomePage(),
+        '/': (context) => const MainBuilder(),
+        '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
         '/registration': (context) => const RegistrationPage(),
         '/main': (context) => const MainPage(),
       },
-      //home: const HomePage(),
+      //home: MainBuilder(),
+
     );
   }
 }
+
+class MainBuilder extends StatelessWidget {
+  const MainBuilder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator(),);
+          }
+          /*else if (snapshot.hasError) {
+
+          }*/
+          else if (snapshot.hasData) {
+            return const MainPage();
+          }
+          else {
+            return const HomePage();
+          }
+        },
+      ),
+    );
+  }
+}
+

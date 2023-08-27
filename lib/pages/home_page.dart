@@ -34,10 +34,6 @@ class HomePage extends StatelessWidget {
             child: TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/login');
-                /*FirebaseAuth.instance.createUserWithEmailAndPassword(
-                    email: "vlad.piermiakov@gmail.com",
-                    password: "123456"
-                );*/
               },
               child: Text(
                 'Log in',

@@ -16,10 +16,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Future signIn() async {
     if (emailController.text == '' || passwordController.text == '') {
-      print('Error!');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Input email and password!"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
     else {
       try {
+        setState(() {
+          const Center(child: CircularProgressIndicator());
+        });
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
@@ -28,9 +36,22 @@ class _LoginPageState extends State<LoginPage> {
             context, '/main', (Route<dynamic> route) => false);
       }
       catch (e) {
-        print('Error login!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Wrong email or password!"),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       }
     }
+  }
+
+  bool _isObscure = true;
+
+  void showPassword() {
+    setState(() {
+      _isObscure = !_isObscure;
+    });
   }
 
   @override
@@ -104,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
             child: TextFormField(
               controller: passwordController,
               onChanged: (value) {},
-              obscureText: true,
+              obscureText: _isObscure,
               enableSuggestions: false,
               autocorrect: false,
               style: GoogleFonts.roboto(
@@ -113,18 +134,26 @@ class _LoginPageState extends State<LoginPage> {
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
               ),
-              decoration: const InputDecoration(
+
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isObscure ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.black,
+                  ),
+                  onPressed: showPassword,
+                ),
                 labelText: 'Password',
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   color: Colors.black,
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.zero),
                   borderSide: BorderSide(
                     width: 2,
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.zero),
                   borderSide: BorderSide(
                     width: 2,
@@ -142,9 +171,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
             child: TextButton(
               onPressed: signIn,
-              /*(){
-                Navigator.pushNamedAndRemoveUntil(context, '/main', (Route<dynamic> route) => false);
-              },*/
               child: Text(
                 'Log in',
                 style: GoogleFonts.roboto(
