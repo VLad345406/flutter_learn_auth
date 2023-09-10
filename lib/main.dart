@@ -5,6 +5,7 @@ import 'package:learn_auth/pages/home_page.dart';
 import 'package:learn_auth/pages/login.dart';
 import 'package:learn_auth/pages/main_page.dart';
 import 'package:learn_auth/pages/registration.dart';
+import 'package:learn_auth/pages/wait_accept_email_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class LearnAuth extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/registration': (context) => const RegistrationPage(),
         '/main': (context) => const MainPage(),
+        '/wait_accept' : (context) => const WaitAcceptEmailPage(),
       },
       //home: MainBuilder(),
 

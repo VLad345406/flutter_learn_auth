@@ -37,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
       }
       catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Wrong email or password!"),
+          SnackBar(
+            content: Text(e.toString()),
             behavior: SnackBarBehavior.floating,
           ),
         );

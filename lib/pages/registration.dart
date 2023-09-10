@@ -18,22 +18,55 @@ class _RegistrationPageState extends State<RegistrationPage> {
     if (emailController.text == '' ||
         passwordController.text == '' ||
         confirmPasswordController.text == '') {
-      print('Error!');
-    } else if (passwordController.text != confirmPasswordController.text) {
-      print('Wrong confirm password');
-    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please, input data!'),
+            behavior: SnackBarBehavior.floating,
+          ),
+      );
+    }
+    else if (passwordController.text != confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Wrong confirm password!'),
+            behavior: SnackBarBehavior.floating,
+          ),
+      );
+    }
+    else {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/main', (Route<dynamic> route) => false);
+        /*try {
+          final user = FirebaseAuth.instance.currentUser!;
+          await user.sendEmailVerification();
+        }
+        catch (e) {
+          snackBar(e.toString());
+        }*/
+        Navigator.pushNamed(
+            context, '/wait_accept');
       }
       catch (e) {
-        print('Error registration!');
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString()),
+              behavior: SnackBarBehavior.floating,
+            ),
+        );
       }
     }
+  }
+
+  void snackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   bool _isObscure1 = true;
@@ -205,7 +238,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
             child: TextButton(
               onPressed: registration,
               /*(){
-                Navigator.pushNamedAndRemoveUntil(context, '/main', (Route<dynamic> route) => false);
+                Navigator.pushNamed(
+                    context, '/wait_accept');
               },*/
               child: Text(
                 'Registration',
