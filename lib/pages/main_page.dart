@@ -57,6 +57,32 @@ class MainPage extends StatelessWidget {
             ),
           ),
         ),
+        Container(
+          height: 50,
+          width: screenWidth - 32,
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
+          decoration: BoxDecoration(
+            border: Border.all(width: 2),
+          ),
+          child: TextButton(
+            onPressed: () async {
+              FirebaseAuth.instance.authStateChanges().listen((
+                  User? user) {
+                user?.delete();
+              });
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home', (Route<dynamic> route) => false);
+            },
+            child: Text(
+              'Remove account',
+              style: GoogleFonts.roboto(
+                color: Colors.red,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
       ]),
     );
   }
