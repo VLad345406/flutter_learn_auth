@@ -32,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/main', (Route<dynamic> route) => false);
+        Navigator.pushNamed(
+            context, '/wait_accept');
       }
       catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -53,8 +53,11 @@ class MainBuilder extends StatelessWidget {
           /*else if (snapshot.hasError) {
 
           }*/
+          /*else if (!FirebaseAuth.instance.currentUser!.emailVerified){
+            return const WaitAcceptEmailPage();
+          }*/
           else if (snapshot.hasData) {
-            return const MainPage();
+            return const WaitAcceptEmailPage();
           }
           else {
             return const HomePage();
