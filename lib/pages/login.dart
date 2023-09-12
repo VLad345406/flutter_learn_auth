@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 fontStyle: FontStyle.normal,
               ),
               decoration: const InputDecoration(
-                labelText: 'Email',
+                labelText: 'Email or phone',
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -180,6 +180,67 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              margin: const EdgeInsets.only(top: 30),
+              child: Text(
+                'Continue with:',
+                style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                margin: const EdgeInsets.only(top: 16),
+                child: IconButton(
+                  icon: Image.asset('assets/images/Google.png'),
+                  onPressed: (){}/*async {
+                    final FirebaseAuth auth;
+
+                    //GoogleSignIn _googleSignIn = GoogleSignIn();
+
+                    //@override
+                    //Future<User?> signUpWithGoogle() async {
+
+                    //GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
+
+                    //GoogleSignInAccount googleSignInAccount = _googleSignInAccount!;
+
+                    GoogleSignInAuthentication googleSignInAuthentication =
+                    await googleSignInAccount.authentication;
+
+                    AuthCredential authCredential = GoogleAuthProvider.credential(
+                        idToken: googleSignInAuthentication.idToken,
+                        accessToken: googleSignInAuthentication.accessToken);
+
+                    UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(authCredential);
+                    User user = authResult.user!;
+
+                    //return user;
+                    //}
+
+                    //Navigator.pushNamedAndRemoveUntil(context, '/home', (Route<dynamic> route) => false);
+                  },*/
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                margin: const EdgeInsets.only(top: 16),
+                child: IconButton(
+                  icon: Image.asset('assets/images/Facebook.png'),
+                  onPressed: (){},
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -11,6 +11,7 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final emailController = TextEditingController();
+  final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
@@ -119,6 +120,43 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ),
               decoration: const InputDecoration(
                 labelText: 'Email',
+                labelStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.zero),
+                  borderSide: BorderSide(
+                    width: 2,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.zero),
+                  borderSide: BorderSide(
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+            ),
+            child: TextFormField(
+              controller: phoneController,
+              onChanged: (value) {},
+              enableSuggestions: false,
+              autocorrect: false,
+              style: GoogleFonts.roboto(
+                fontSize: 20,
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.normal,
+              ),
+              decoration: const InputDecoration(
+                labelText: 'Phone number',
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
