@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'package:learn_auth/pages/main_page.dart';
+import 'package:learn_auth/elements/button.dart';
+import 'package:learn_auth/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  Future signIn() async {
+  signIn() async {
     if (emailController.text == '' || passwordController.text == '') {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -32,8 +33,7 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        Navigator.pushNamed(
-            context, '/wait_accept');
+        Navigator.pushNamed(context, '/wait_accept');
       }
       catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -54,12 +54,10 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-
-    super.dispose();
+  void googleSignIn() {
+    setState(() {
+      AuthService().signInWithGoogle();
+    });
   }
 
   @override
@@ -162,24 +160,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          Container(
-            height: 50,
+          Button(
             width: screenWidth - 32,
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-            decoration: BoxDecoration(
-              border: Border.all(width: 2),
-            ),
-            child: TextButton(
-              onPressed: signIn,
-              child: Text(
-                'Log in',
-                style: GoogleFonts.roboto(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: 0,
+            method: signIn,
+            label: 'Log in'
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -203,33 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                 margin: const EdgeInsets.only(top: 16),
                 child: IconButton(
                   icon: Image.asset('assets/images/Google.png'),
-                  onPressed: (){}/*async {
-                    final FirebaseAuth auth;
-
-                    //GoogleSignIn _googleSignIn = GoogleSignIn();
-
-                    //@override
-                    //Future<User?> signUpWithGoogle() async {
-
-                    //GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
-
-                    //GoogleSignInAccount googleSignInAccount = _googleSignInAccount!;
-
-                    GoogleSignInAuthentication googleSignInAuthentication =
-                    await googleSignInAccount.authentication;
-
-                    AuthCredential authCredential = GoogleAuthProvider.credential(
-                        idToken: googleSignInAuthentication.idToken,
-                        accessToken: googleSignInAuthentication.accessToken);
-
-                    UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(authCredential);
-                    User user = authResult.user!;
-
-                    //return user;
-                    //}
-
-                    //Navigator.pushNamedAndRemoveUntil(context, '/home', (Route<dynamic> route) => false);
-                  },*/
+                  onPressed: AuthService().signInWithGoogle,
                 ),
               ),
               Container(

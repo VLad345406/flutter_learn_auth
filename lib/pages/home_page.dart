@@ -2,9 +2,14 @@
 //import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:learn_auth/pages/login.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  route(classRoute) {
+    return classRoute;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,8 @@ class HomePage extends StatelessWidget {
             ),
             child: TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/login');
+                route(const LoginPage());
+                //Navigator.pushNamed(context, '/login');
               },
               child: Text(
                 'Log in',
