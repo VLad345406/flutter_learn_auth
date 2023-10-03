@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:learn_auth/elements/button.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -34,7 +35,19 @@ class MainPage extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Container(
+        Button(
+            width: screenWidth - 32,
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: 0,
+            method: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home', (Route<dynamic> route) => false);
+            },
+            label: 'Log out'),
+        /*Container(
           height: 50,
           width: screenWidth - 32,
           margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
@@ -56,8 +69,22 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        Container(
+        ),*/
+        Button(
+            width: screenWidth - 32,
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: 0,
+            method: () async {
+              FirebaseAuth.instance.authStateChanges().listen((User? user) {
+                user?.delete();
+              });
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home', (Route<dynamic> route) => false);
+            },
+            label: 'Log out'),
+        /*Container(
           height: 50,
           width: screenWidth - 32,
           margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
@@ -66,8 +93,7 @@ class MainPage extends StatelessWidget {
           ),
           child: TextButton(
             onPressed: () async {
-              FirebaseAuth.instance.authStateChanges().listen((
-                  User? user) {
+              FirebaseAuth.instance.authStateChanges().listen((User? user) {
                 user?.delete();
               });
               Navigator.pushNamedAndRemoveUntil(
@@ -82,7 +108,7 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        ),*/
       ]),
     );
   }

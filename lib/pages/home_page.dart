@@ -1,8 +1,5 @@
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:learn_auth/pages/login.dart';
+import 'package:learn_auth/elements/button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,15 +10,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .primaryColor,
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Learn auth'),
@@ -29,7 +21,17 @@ class HomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          Button(
+              width: screenWidth - 40,
+              left: 20,
+              right: 20,
+              top: 0,
+              bottom: 0,
+              method: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              label: 'Log in'),
+          /*Container(
             height: 50,
             width: screenWidth - 40,
             margin: const EdgeInsets.only(left: 20, right: 20),
@@ -50,11 +52,21 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
           const SizedBox(
             height: 20,
           ),
-          Container(
+          Button(
+              width: screenWidth - 40,
+              left: 20,
+              right: 20,
+              top: 0,
+              bottom: 0,
+              method: () {
+                Navigator.pushNamed(context, '/registration');
+              },
+              label: 'Registration'),
+          /*Container(
             height: 50,
             width: screenWidth - 40,
             margin: const EdgeInsets.only(left: 20, right: 20),
@@ -74,7 +86,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

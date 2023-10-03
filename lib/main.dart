@@ -17,7 +17,7 @@ class LearnAuth extends StatelessWidget {
   const LearnAuth({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Learn auth',
       theme: ThemeData(
@@ -29,7 +29,7 @@ class LearnAuth extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/registration': (context) => const RegistrationPage(),
         '/main': (context) => const MainPage(),
-        '/wait_accept' : (context) => const WaitAcceptEmailPage(),
+        '/wait_accept': (context) => const WaitAcceptEmailPage(),
       },
       home: Scaffold(
         body: AuthService().handleAuthState(),

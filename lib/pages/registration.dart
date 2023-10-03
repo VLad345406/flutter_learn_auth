@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:learn_auth/elements/button.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -20,21 +21,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
         passwordController.text == '' ||
         confirmPasswordController.text == '') {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please, input data!'),
-            behavior: SnackBarBehavior.floating,
-          ),
+        const SnackBar(
+          content: Text('Please, input data!'),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
-    }
-    else if (passwordController.text != confirmPasswordController.text) {
+    } else if (passwordController.text != confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Wrong confirm password!'),
-            behavior: SnackBarBehavior.floating,
-          ),
+        const SnackBar(
+          content: Text('Wrong confirm password!'),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
-    }
-    else {
+    } else {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
@@ -47,15 +46,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
         catch (e) {
           snackBar(e.toString());
         }*/
-        Navigator.pushNamed(
-            context, '/wait_accept');
-      }
-      catch (e) {
+        Navigator.pushNamed(context, '/wait_accept');
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-              behavior: SnackBarBehavior.floating,
-            ),
+          SnackBar(
+            content: Text(e.toString()),
+            behavior: SnackBarBehavior.floating,
+          ),
         );
       }
     }
@@ -78,6 +75,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       _isObscure1 = !_isObscure1;
     });
   }
+
   void showPassword2() {
     setState(() {
       _isObscure2 = !_isObscure2;
@@ -265,7 +263,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ),
             ),
           ),
-          Container(
+          Button(
+              width: screenWidth - 32,
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: 0,
+              method: registration,
+              label: 'Registration'),
+          /*Container(
             height: 60,
             width: screenWidth - 32,
             margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
@@ -288,7 +294,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
