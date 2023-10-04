@@ -36,7 +36,7 @@ class _ProjectTextFieldState extends State<ProjectTextField> {
       ),
       child: TextFormField(
         controller: widget.controller,
-        obscureText: _isObscure,
+        obscureText: widget.showVisibleButton ? _isObscure : false,
         enableSuggestions: false,
         autocorrect: false,
         style: GoogleFonts.roboto(

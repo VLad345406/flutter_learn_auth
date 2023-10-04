@@ -32,12 +32,6 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
     }
   }
 
-  /*void dispose() {
-    timer?.cancel();
-
-    super.dispose();
-  }*/
-
   Future checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser!.reload();
 
