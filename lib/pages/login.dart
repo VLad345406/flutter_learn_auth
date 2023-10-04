@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
+import 'package:learn_auth/elements/text_field.dart';
 import 'package:learn_auth/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,8 +24,7 @@ class _LoginPageState extends State<LoginPage> {
           behavior: SnackBarBehavior.floating,
         ),
       );
-    }
-    else {
+    } else {
       try {
         setState(() {
           const Center(child: CircularProgressIndicator());
@@ -34,8 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           password: passwordController.text.trim(),
         );
         Navigator.pushNamed(context, '/wait_accept');
-      }
-      catch (e) {
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
@@ -46,24 +45,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  bool _isObscure = true;
-
-  void showPassword() {
-    setState(() {
-      _isObscure = !_isObscure;
-    });
-  }
-
-  void googleSignIn() {
-    setState(() {
-      AuthService().signInWithGoogle();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -77,98 +60,22 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-            ),
-            child: TextFormField(
-              controller: emailController,
-              onChanged: (value) {},
-              enableSuggestions: false,
-              autocorrect: false,
-              style: GoogleFonts.roboto(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-              decoration: const InputDecoration(
-                labelText: 'Email or phone',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
+          ProjectTextField(
+            controller: emailController,
+            showVisibleButton: false,
+            label: 'Email or phone'
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-            ),
-            child: TextFormField(
-              controller: passwordController,
-              onChanged: (value) {},
-              obscureText: _isObscure,
-              enableSuggestions: false,
-              autocorrect: false,
-              style: GoogleFonts.roboto(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isObscure ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.black,
-                  ),
-                  onPressed: showPassword,
-                ),
-                labelText: 'Password',
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
+          ProjectTextField(
+            controller: passwordController,
+            showVisibleButton: true,
+            label: 'Password'
           ),
-          Button(
-            width: screenWidth - 32,
-            left: 16,
-            right: 16,
-            top: 16,
-            bottom: 0,
+          ProjectButton(
             method: signIn,
-            label: 'Log in'
+            label: 'Log in',
+            textColor: Colors.black,
           ),
+          //"continue with" text
           Align(
             alignment: Alignment.topCenter,
             child: Container(
@@ -183,23 +90,22 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          //icon buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                margin: const EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                 child: IconButton(
                   icon: Image.asset('assets/images/Google.png'),
                   onPressed: AuthService().signInWithGoogle,
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                margin: const EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                 child: IconButton(
                   icon: Image.asset('assets/images/Facebook.png'),
-                  onPressed: (){},
+                  onPressed: () {},
                 ),
               ),
             ],

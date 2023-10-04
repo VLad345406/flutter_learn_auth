@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
+
+import '../elements/text_field.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -39,13 +40,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        /*try {
-          final user = FirebaseAuth.instance.currentUser!;
-          await user.sendEmailVerification();
-        }
-        catch (e) {
-          snackBar(e.toString());
-        }*/
         Navigator.pushNamed(context, '/wait_accept');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -67,25 +61,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  bool _isObscure1 = true;
-  bool _isObscure2 = true;
-
-  void showPassword1() {
-    setState(() {
-      _isObscure1 = !_isObscure1;
-    });
-  }
-
-  void showPassword2() {
-    setState(() {
-      _isObscure2 = !_isObscure2;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -99,202 +76,31 @@ class _RegistrationPageState extends State<RegistrationPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-            ),
-            child: TextFormField(
-              controller: emailController,
-              onChanged: (value) {},
-              enableSuggestions: false,
-              autocorrect: false,
-              style: GoogleFonts.roboto(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
+          ProjectTextField(
+            controller: emailController,
+            showVisibleButton: false,
+            label: 'Email'
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-            ),
-            child: TextFormField(
-              controller: phoneController,
-              onChanged: (value) {},
-              enableSuggestions: false,
-              autocorrect: false,
-              style: GoogleFonts.roboto(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-              decoration: const InputDecoration(
-                labelText: 'Phone number',
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
+          ProjectTextField(
+            controller: phoneController,
+            showVisibleButton: false,
+            label: 'Phone number'
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-            ),
-            child: TextFormField(
-              controller: passwordController,
-              onChanged: (value) {},
-              obscureText: _isObscure1,
-              enableSuggestions: false,
-              autocorrect: false,
-              style: GoogleFonts.roboto(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isObscure1 ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.black,
-                  ),
-                  onPressed: showPassword1,
-                ),
-                labelText: 'Password',
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
+          ProjectTextField(
+            controller: passwordController,
+            showVisibleButton: true,
+            label: 'Password'
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-            ),
-            child: TextFormField(
-              controller: confirmPasswordController,
-              onChanged: (value) {},
-              obscureText: _isObscure2,
-              enableSuggestions: false,
-              autocorrect: false,
-              style: GoogleFonts.roboto(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              ),
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isObscure2 ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.black,
-                  ),
-                  onPressed: showPassword2,
-                ),
-                labelText: 'Confirm password',
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.zero),
-                  borderSide: BorderSide(
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
+          ProjectTextField(
+            controller: confirmPasswordController,
+            showVisibleButton: true,
+            label: 'Confirm password'
           ),
-          Button(
-              width: screenWidth - 32,
-              left: 16,
-              right: 16,
-              top: 16,
-              bottom: 0,
-              method: registration,
-              label: 'Registration'),
-          /*Container(
-            height: 60,
-            width: screenWidth - 32,
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-            decoration: BoxDecoration(
-              border: Border.all(width: 2),
-              color: Colors.black,
-            ),
-            child: TextButton(
-              onPressed: registration,
-              /*(){
-                Navigator.pushNamed(
-                    context, '/wait_accept');
-              },*/
-              child: Text(
-                'Registration',
-                style: GoogleFonts.roboto(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ),*/
+          ProjectButton(
+            method: registration,
+            label: 'Registration',
+            textColor: Colors.black,
+          ),
         ],
       ),
     );

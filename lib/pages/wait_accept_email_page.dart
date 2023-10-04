@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
 import 'package:learn_auth/pages/main_page.dart';
 
@@ -27,7 +26,7 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
       sendVerificationEmail();
 
       timer = Timer.periodic(
-        Duration(seconds: 3),
+        const Duration(seconds: 3),
         (_) => checkEmailVerified(),
       );
     }
@@ -39,7 +38,6 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
     super.dispose();
   }*/
 
-  @override
   Future checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser!.reload();
 
@@ -89,34 +87,11 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
                   ),
                 ),
               ),
-              Button(
-                  width: 0,
-                  left: 16,
-                  right: 16,
-                  top: 16,
-                  bottom: 0,
+              ProjectButton(
                   method: sendVerificationEmail,
-                  label: 'Resent Email'),
-              /*Container(
-                height: 60,
-                //width: screenWidth - 32,
-                margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2),
-                  color: Colors.black,
-                ),
-                child: TextButton(
-                  onPressed: sendVerificationEmail,
-                  child: Text(
-                    'Resent Email',
-                    style: GoogleFonts.roboto(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ),*/
+                  label: 'Resent Email',
+                textColor: Colors.black,
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: TextButton(
