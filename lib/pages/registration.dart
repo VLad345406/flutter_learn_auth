@@ -21,19 +21,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
     if (emailController.text == '' ||
         passwordController.text == '' ||
         confirmPasswordController.text == '') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please, input data!'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      snackBar('Please, input data');
     } else if (passwordController.text != confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Wrong confirm password!'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      snackBar('Wrong confirm password!');
     } else {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -42,12 +32,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         );
         Navigator.pushNamed(context, '/wait_accept');
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        snackBar(e.toString());
       }
     }
   }

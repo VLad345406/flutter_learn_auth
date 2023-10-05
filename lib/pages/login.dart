@@ -16,14 +16,18 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  void snackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   signIn() async {
     if (emailController.text == '' || passwordController.text == '') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Input email and password!"),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      snackBar("Input email and password!");
     } else {
       try {
         setState(() {
@@ -35,12 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         );
         Navigator.pushNamed(context, '/wait_accept');
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        snackBar(e.toString());
       }
     }
   }
