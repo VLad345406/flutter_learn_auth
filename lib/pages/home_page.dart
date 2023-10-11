@@ -1,36 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:learn_auth/elements/button.dart';
+import 'package:learn_auth/pages/login.dart';
+import 'package:learn_auth/pages/registration.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  route(classRoute) {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isLogin = true;
+
+  /*route(classRoute) {
     return classRoute;
-  }
+  }*/
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text('Learn auth'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ProjectButton(
-            method: () => Navigator.pushNamed(context, '/login'),
-            label: 'Log in',
-            textColor: Colors.black,
-          ),
-          ProjectButton(
-            method: () => Navigator.pushNamed(context, '/registration'),
-            label: 'Registration',
-            textColor: Colors.black,
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+    isLogin ? LoginPage(onClickedSignUp: toggle) :
+    RegistrationPage(onClickedSignIn: toggle);
+
+  void toggle() => setState(() => isLogin = !isLogin);
 }

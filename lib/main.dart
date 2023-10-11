@@ -1,10 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:learn_auth/pages/home_page.dart';
-import 'package:learn_auth/pages/login.dart';
-import 'package:learn_auth/pages/main_page.dart';
-import 'package:learn_auth/pages/registration.dart';
-import 'package:learn_auth/pages/wait_accept_email_page.dart';
 import 'package:learn_auth/services/auth_service.dart';
 
 void main() async {
@@ -24,13 +19,13 @@ class LearnAuth extends StatelessWidget {
         primaryColor: Colors.white,
       ),
       //initialRoute: '/',
-      routes: {
+      /*routes: {
         '/home': (context) => const HomePage(),
-        '/login': (context) => const LoginPage(),
-        '/registration': (context) => const RegistrationPage(),
+        //'/login': (context) => const LoginPage(),
+        //'/registration': (context) => const RegistrationPage(),
         '/main': (context) => const MainPage(),
-        '/wait_accept': (context) => const WaitAcceptEmailPage(),
-      },
+        //'/wait_accept': (context) => const WaitAcceptEmailPage(),
+      },*/
       home: Scaffold(
         body: AuthService().handleAuthState(),
       ),

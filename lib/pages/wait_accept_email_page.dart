@@ -6,7 +6,9 @@ import 'package:learn_auth/elements/button.dart';
 import 'package:learn_auth/pages/main_page.dart';
 
 class WaitAcceptEmailPage extends StatefulWidget {
-  const WaitAcceptEmailPage({super.key});
+  final VoidCallback onClickedCansel;
+
+  const WaitAcceptEmailPage({super.key, required this.onClickedCansel});
 
   @override
   State<WaitAcceptEmailPage> createState() => _WaitAcceptEmailPageState();
@@ -82,8 +84,9 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
                 ),
               ),
               ProjectButton(
-                  method: sendVerificationEmail,
-                  label: 'Resent Email',
+                  //method: sendVerificationEmail,
+                method: (){},
+                label: 'Resent Email',
                 textColor: Colors.black,
               ),
               Padding(
@@ -93,8 +96,9 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
                     try {
                       FirebaseAuth.instance.signOut();
                     } catch (e) {
-                      Navigator.pushAndRemoveUntil(
-                          context, '/home' as Route<Object?>, (route) => false);
+                      widget.onClickedCansel;
+                      /*Navigator.pushAndRemoveUntil(
+                          context, '/home' as Route<Object?>, (route) => false);*/
                     }
                   },
                   child: const Text(

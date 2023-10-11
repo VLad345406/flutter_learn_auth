@@ -1,11 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
+import 'package:learn_auth/pages/wait_accept_email_page.dart';
 
 import '../elements/text_field.dart';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+  final VoidCallback onClickedSignIn;
+
+  const RegistrationPage({super.key, required this.onClickedSignIn});
 
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
@@ -30,7 +35,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        Navigator.pushNamed(context, '/wait_accept');
+        toggle();
+        //Navigator.pushNamed(context, '/wait_accept');
       } catch (e) {
         snackBar(e.toString());
       }
@@ -46,21 +52,28 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
+  bool isWait = false;
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => !isWait ?
+    Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Registration',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
         backgroundColor: Colors.black,
+        title: const Text('Messenger'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Center(
+            child: Text(
+              'Registration',
+              style: GoogleFonts.roboto(
+                color: Colors.black,
+                fontSize: 40,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
           ProjectTextField(
             controller: emailController,
             showVisibleButton: false,
@@ -86,8 +99,32 @@ class _RegistrationPageState extends State<RegistrationPage> {
             label: 'Registration',
             textColor: Colors.black,
           ),
+          RichText(
+            text: TextSpan(
+              text: 'Have account? ',
+              style: GoogleFonts.roboto(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+              children: [
+                TextSpan(
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = widget.onClickedSignIn,
+                  text: 'Login!',
+                  style: GoogleFonts.roboto(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
-    );
-  }
+    ) : WaitAcceptEmailPage(onClickedCansel: toggle);
+
+  void toggle() => setState(() => isWait = !isWait);
 }

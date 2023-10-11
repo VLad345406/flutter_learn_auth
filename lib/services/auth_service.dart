@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../pages/home_page.dart';
-import '../pages/wait_accept_email_page.dart';
+import '../pages/main_page.dart';
 
 class AuthService {
   handleAuthState() {
@@ -11,8 +11,19 @@ class AuthService {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const WaitAcceptEmailPage();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          else if (snapshot.hasError) {
+            return const Center(child: Text('Something went wrong!'));
+          }
+          else if (snapshot.hasData) {
+            /*if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+              return const WaitAcceptEmailPage();
+            }*/
+            //else {
+              return const MainPage();
+            //}
           }
           else {
             return const HomePage();

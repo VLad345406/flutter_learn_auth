@@ -38,7 +38,7 @@ class MainPage extends StatelessWidget {
           method: () {
             FirebaseAuth.instance.signOut();
             Navigator.pushNamedAndRemoveUntil(
-                context, '/home', (Route<dynamic> route) => false);
+                context, '/login', (Route<dynamic> route) => false);
           },
           label: 'Log out',
           textColor: Colors.black,
@@ -49,7 +49,7 @@ class MainPage extends StatelessWidget {
               user?.delete();
             });
             Navigator.pushNamedAndRemoveUntil(
-                context, '/home', (Route<dynamic> route) => false);
+                context, '/login', (Route<dynamic> route) => false);
           },
           label: 'Remove account',
           textColor: Colors.red,
