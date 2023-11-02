@@ -3,9 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
-import 'package:learn_auth/pages/wait_accept_email_page.dart';
+import 'package:learn_auth/pages/login_or_registration/wait_accept_email_page.dart';
 
-import '../elements/text_field.dart';
+import '../../elements/text_field.dart';
 
 class RegistrationPage extends StatefulWidget {
   final VoidCallback onClickedSignIn;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
 import 'package:learn_auth/elements/text_field.dart';
+import 'package:learn_auth/pages/restore_page.dart';
 import 'package:learn_auth/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -128,8 +129,37 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   TextSpan(
                     recognizer: TapGestureRecognizer()
-                    ..onTap = widget.onClickedSignUp,
+                      ..onTap = widget.onClickedSignUp,
                     text: 'Register!',
+                    style: GoogleFonts.roboto(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: RichText(
+              text: TextSpan(
+                text: 'Forgot password? ',
+                style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+                children: [
+                  TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = (){Navigator.push(
+                          context, MaterialPageRoute(
+                          builder: (context) => const RestorePage())
+                      );},
+                    text: 'Restore',
                     style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontSize: 14,

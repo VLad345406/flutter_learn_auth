@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../pages/login_or_registration_builder.dart';
-import '../pages/main_page.dart';
+import '../pages/login_or_registration/login_or_registration_builder.dart';
+import '../pages/login_or_registration/main_page.dart';
 
 class AuthService {
   handleAuthState() {

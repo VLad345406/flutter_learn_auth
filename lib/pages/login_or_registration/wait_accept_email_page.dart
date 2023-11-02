@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_auth/elements/button.dart';
-import 'package:learn_auth/pages/main_page.dart';
+import 'package:learn_auth/pages/login_or_registration/main_page.dart';
 
 class WaitAcceptEmailPage extends StatefulWidget {
   final VoidCallback onClickedCansel;

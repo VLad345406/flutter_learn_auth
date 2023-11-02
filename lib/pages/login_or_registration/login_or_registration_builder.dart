@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learn_auth/pages/login.dart';
-import 'package:learn_auth/pages/registration.dart';
+import 'package:learn_auth/pages/login_or_registration/login_page.dart';
+import 'package:learn_auth/pages/login_or_registration/registration_page.dart';
 
 class LoginOrRegisterBuilder extends StatefulWidget {
   const LoginOrRegisterBuilder({super.key});
@@ -11,10 +11,6 @@ class LoginOrRegisterBuilder extends StatefulWidget {
 
 class _LoginOrRegisterBuilderState extends State<LoginOrRegisterBuilder> {
   bool isLogin = true;
-
-  /*route(classRoute) {
-    return classRoute;
-  }*/
 
   @override
   Widget build(BuildContext context) =>
