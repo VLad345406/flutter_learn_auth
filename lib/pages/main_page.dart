@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:learn_auth/elements/button.dart';
 
 class MainPage extends StatelessWidget {
@@ -35,10 +36,12 @@ class MainPage extends StatelessWidget {
           ),
         ),
         ProjectButton(
-          method: () {
+          method: () async {
+            GoogleSignIn googleSignIn = GoogleSignIn();
+            await googleSignIn.disconnect();
             FirebaseAuth.instance.signOut();
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/login', (Route<dynamic> route) => false);
+            /*Navigator.pushNamedAndRemoveUntil(
+                context, '/login', (Route<dynamic> route) => false);*/
           },
           label: 'Log out',
           textColor: Colors.black,

@@ -99,27 +99,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
             label: 'Registration',
             textColor: Colors.black,
           ),
-          RichText(
-            text: TextSpan(
-              text: 'Have account? ',
-              style: GoogleFonts.roboto(
-                color: Colors.black,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
-              children: [
-                TextSpan(
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = widget.onClickedSignIn,
-                  text: 'Login!',
-                  style: GoogleFonts.roboto(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    decoration: TextDecoration.underline,
-                  ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: RichText(
+              text: TextSpan(
+                text: 'Have account? ',
+                style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                 ),
-              ],
+                children: [
+                  TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = widget.onClickedSignIn,
+                    text: 'Login!',
+                    style: GoogleFonts.roboto(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

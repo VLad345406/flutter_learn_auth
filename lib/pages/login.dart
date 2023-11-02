@@ -115,27 +115,30 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ],
           ),
-          RichText(
-            text: TextSpan(
-              text: 'Don\'t have account? ',
-              style: GoogleFonts.roboto(
-                color: Colors.black,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
-              children: [
-                TextSpan(
-                  recognizer: TapGestureRecognizer()
-                  ..onTap = widget.onClickedSignUp,
-                  text: 'Register!',
-                  style: GoogleFonts.roboto(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    decoration: TextDecoration.underline,
-                  ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: RichText(
+              text: TextSpan(
+                text: 'Don\'t have account? ',
+                style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                 ),
-              ],
+                children: [
+                  TextSpan(
+                    recognizer: TapGestureRecognizer()
+                    ..onTap = widget.onClickedSignUp,
+                    text: 'Register!',
+                    style: GoogleFonts.roboto(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

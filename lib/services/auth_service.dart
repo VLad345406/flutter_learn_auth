@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../pages/home_page.dart';
+import '../pages/login_or_registration_builder.dart';
 import '../pages/main_page.dart';
 
 class AuthService {
@@ -26,7 +26,7 @@ class AuthService {
             //}
           }
           else {
-            return const HomePage();
+            return const LoginOrRegisterBuilder();
           }
         },
       ),

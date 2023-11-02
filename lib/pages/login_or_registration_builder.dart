@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:learn_auth/pages/login.dart';
 import 'package:learn_auth/pages/registration.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class LoginOrRegisterBuilder extends StatefulWidget {
+  const LoginOrRegisterBuilder({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<LoginOrRegisterBuilder> createState() => _LoginOrRegisterBuilderState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _LoginOrRegisterBuilderState extends State<LoginOrRegisterBuilder> {
   bool isLogin = true;
 
   /*route(classRoute) {
