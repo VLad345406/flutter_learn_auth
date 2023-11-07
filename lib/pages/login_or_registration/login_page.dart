@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
 import 'package:learn_auth/elements/text_field.dart';
-import 'package:learn_auth/pages/restore_page.dart';
+import 'package:learn_auth/pages/login_or_registration/restore_page.dart';
 import 'package:learn_auth/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -41,9 +41,9 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        Navigator.pushNamed(context, '/wait_accept');
-      } catch (e) {
-        snackBar(e.toString());
+        //Navigator.pushNamed(context, '/wait_accept');
+      } on FirebaseAuthException catch (e) {
+        snackBar(e.message.toString());
       }
     }
   }
