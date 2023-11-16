@@ -1,63 +1,40 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:learn_auth/elements/button.dart';
+import 'package:learn_auth/pages/user_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    //final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'User page',
+          'Chats',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
+        centerTitle: true,
+        elevation: 0,
         backgroundColor: Colors.black,
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UserPage()),
+                );
+              })
+        ],
       ),
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
-          'Signed in as',
-          style: GoogleFonts.timmana(
-            fontSize: 20,
-          ),
-        ),
-        Text(
-          user.email!,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        ProjectButton(
-          method: () async {
-            GoogleSignIn googleSignIn = GoogleSignIn();
-            await googleSignIn.disconnect();
-            FirebaseAuth.instance.signOut();
-            /*Navigator.pushNamedAndRemoveUntil(
-                context, '/login', (Route<dynamic> route) => false);*/
-          },
-          label: 'Log out',
-          textColor: Colors.black,
-        ),
-        ProjectButton(
-          method: () async {
-            FirebaseAuth.instance.authStateChanges().listen((User? user) {
-              user?.delete();
-            });
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/login', (Route<dynamic> route) => false);
-          },
-          label: 'Remove account',
-          textColor: Colors.red,
-        ),
-      ]),
+      body: const Column(
+      )
     );
   }
 }

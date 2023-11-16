@@ -37,8 +37,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         );
         toggle();
         //Navigator.pushNamed(context, '/wait_accept');
-      } catch (e) {
-        snackBar(e.toString());
+      } on FirebaseAuthException catch (e) {
+        snackBar(e.message.toString());
       }
     }
   }
@@ -55,79 +55,84 @@ class _RegistrationPageState extends State<RegistrationPage> {
   bool isWait = false;
 
   @override
-  Widget build(BuildContext context) => !isWait ?
-    Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text('Messenger'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text(
-              'Registration',
-              style: GoogleFonts.roboto(
-                color: Colors.black,
-                fontSize: 40,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+  Widget build(BuildContext context) => !isWait
+      ? Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+            title: const Text('Messenger'),
+            centerTitle: true,
+            elevation: 0,
           ),
-          ProjectTextField(
-            controller: emailController,
-            showVisibleButton: false,
-            label: 'Email'
-          ),
-          ProjectTextField(
-            controller: phoneController,
-            showVisibleButton: false,
-            label: 'Phone number'
-          ),
-          ProjectTextField(
-            controller: passwordController,
-            showVisibleButton: true,
-            label: 'Password'
-          ),
-          ProjectTextField(
-            controller: confirmPasswordController,
-            showVisibleButton: true,
-            label: 'Confirm password'
-          ),
-          ProjectButton(
-            method: registration,
-            label: 'Registration',
-            textColor: Colors.black,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: RichText(
-              text: TextSpan(
-                text: 'Have account? ',
-                style: GoogleFonts.roboto(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                children: [
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = widget.onClickedSignIn,
-                    text: 'Login!',
+          body: Center(
+            child: ListView(
+              shrinkWrap: true,
+              primary: false,
+              children: [
+                Center(
+                  child: Text(
+                    'Registration',
                     style: GoogleFonts.roboto(
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: 40,
                       fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline,
                     ),
                   ),
-                ],
-              ),
+                ),
+                ProjectTextField(
+                    controller: emailController,
+                    showVisibleButton: false,
+                    label: 'Email'),
+                /*ProjectTextField(
+                controller: phoneController,
+                showVisibleButton: false,
+                label: 'Phone number'
+            ),*/
+                ProjectTextField(
+                    controller: passwordController,
+                    showVisibleButton: true,
+                    label: 'Password'),
+                ProjectTextField(
+                    controller: confirmPasswordController,
+                    showVisibleButton: true,
+                    label: 'Confirm password'),
+                ProjectButton(
+                  method: registration,
+                  label: 'Registration',
+                  textColor: Colors.black,
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Have account? ',
+                        style: GoogleFonts.roboto(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        children: [
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = widget.onClickedSignIn,
+                            text: 'Login!',
+                            style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-    ) : WaitAcceptEmailPage(onClickedCansel: toggle);
+        )
+      : WaitAcceptEmailPage(onClickedCansel: toggle);
 
   void toggle() => setState(() => isWait = !isWait);
 }

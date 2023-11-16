@@ -41,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        //Navigator.pushNamed(context, '/wait_accept');
       } on FirebaseAuthException catch (e) {
         snackBar(e.message.toString());
       }
@@ -54,124 +53,133 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Messenger'),
+        centerTitle: true,
+        elevation: 0,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text(
-              'Login',
-              style: GoogleFonts.roboto(
-                color: Colors.black,
-                fontSize: 40,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          ProjectTextField(
-              controller: emailController,
-              showVisibleButton: false,
-              label: 'Email or phone'),
-          ProjectTextField(
-              controller: passwordController,
-              showVisibleButton: true,
-              label: 'Password'),
-          ProjectButton(
-            method: signIn,
-            label: 'Log in',
-            textColor: Colors.black,
-          ),
-          //"continue with" text
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              margin: const EdgeInsets.only(top: 30),
+      body: Center(
+        child: ListView(
+          primary: false,
+          shrinkWrap: true,
+          children: [
+            Center(
               child: Text(
-                'Continue with:',
+                'Login',
                 style: GoogleFonts.roboto(
                   color: Colors.black,
-                  fontSize: 14,
+                  fontSize: 40,
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ),
-          ),
-          //icon buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-                child: IconButton(
-                  icon: Image.asset('assets/images/Google.png'),
-                  onPressed: AuthService().signInWithGoogle,
+            ProjectTextField(
+                controller: emailController,
+                showVisibleButton: false,
+                label: 'Email or phone'),
+            ProjectTextField(
+                controller: passwordController,
+                showVisibleButton: true,
+                label: 'Password'),
+            ProjectButton(
+              method: signIn,
+              label: 'Log in',
+              textColor: Colors.black,
+            ),
+            //"continue with" text
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                margin: const EdgeInsets.only(top: 30),
+                child: Text(
+                  'Continue with:',
+                  style: GoogleFonts.roboto(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-                child: IconButton(
-                  icon: Image.asset('assets/images/Facebook.png'),
-                  onPressed: () {},
+            ),
+            //icon buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
+                  child: IconButton(
+                    icon: Image.asset('assets/images/Google.png'),
+                    onPressed: AuthService().signInWithGoogle,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: RichText(
-              text: TextSpan(
-                text: 'Don\'t have account? ',
-                style: GoogleFonts.roboto(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                Container(
+                  padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
+                  child: IconButton(
+                    icon: Image.asset('assets/images/Facebook.png'),
+                    onPressed: () {},
+                  ),
                 ),
-                children: [
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = widget.onClickedSignUp,
-                    text: 'Register!',
+              ],
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Don\'t have account? ',
                     style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline,
                     ),
+                    children: [
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = widget.onClickedSignUp,
+                        text: 'Register!',
+                        style: GoogleFonts.roboto(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: RichText(
-              text: TextSpan(
-                text: 'Forgot password? ',
-                style: GoogleFonts.roboto(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-                children: [
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = (){Navigator.push(
-                          context, MaterialPageRoute(
-                          builder: (context) => const RestorePage())
-                      );},
-                    text: 'Restore',
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Forgot password? ',
                     style: GoogleFonts.roboto(
                       color: Colors.black,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline,
                     ),
+                    children: [
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = (){Navigator.push(
+                              context, MaterialPageRoute(
+                              builder: (context) => const RestorePage())
+                          );},
+                        text: 'Restore',
+                        style: GoogleFonts.roboto(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
