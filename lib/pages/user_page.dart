@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:learn_auth/pages/login_or_registration/login_or_registration_builder.dart';
 
 import '../elements/button.dart';
 
@@ -39,15 +41,25 @@ class UserPage extends StatelessWidget {
           ),
         ),
         ProjectButton(
-          method: ()  {},
+          method: () {},
           label: 'Change password',
           textColor: Colors.black,
         ),
         ProjectButton(
           method: () async {
-            GoogleSignIn googleSignIn = GoogleSignIn();
+            try {
+              GoogleSignIn googleSignIn = GoogleSignIn();
+              await googleSignIn.disconnect();
+            } catch (e) {
+              if (kDebugMode) {
+                print(e);
+              }
+            }
             await FirebaseAuth.instance.signOut();
-            await googleSignIn.disconnect();
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginOrRegisterBuilder()),
+                (route) => false);
           },
           label: 'Log out',
           textColor: Colors.red,

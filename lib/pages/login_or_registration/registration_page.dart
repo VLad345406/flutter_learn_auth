@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +32,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
       snackBar('Wrong confirm password!');
     } else {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
+        final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+        _fireStore.collection('users').doc(userCredential.user!.uid).set({
+          'uid': userCredential.user!.uid,
+          'email': emailController.text,
+        });
         toggle();
         //Navigator.pushNamed(context, '/wait_accept');
       } on FirebaseAuthException catch (e) {

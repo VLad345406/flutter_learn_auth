@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
 import 'package:learn_auth/elements/text_field.dart';
 import 'package:learn_auth/pages/login_or_registration/restore_page.dart';
+import 'package:learn_auth/pages/main_page.dart';
 import 'package:learn_auth/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -37,10 +39,20 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           const Center(child: CircularProgressIndicator());
         });
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
+
+        final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+        _fireStore.collection('users').doc(userCredential.user!.uid).set({
+          'uid': userCredential.user!.uid,
+          'email': emailController.text,
+        }, SetOptions(merge: true));
+
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const MainPage()));
       } on FirebaseAuthException catch (e) {
         snackBar(e.message.toString());
       }
@@ -107,7 +119,18 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                   child: IconButton(
                     icon: Image.asset('assets/images/Google.png'),
-                    onPressed: AuthService().signInWithGoogle,
+                    onPressed: () async {
+                      UserCredential user = await AuthService().signInWithGoogle();
+                      if (user.user != null) {
+                        final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+                        _fireStore.collection('users').doc(user.user!.uid).set({
+                          'uid': user.user!.uid,
+                          'email': user.user!.email,
+                        }, SetOptions(merge: true));
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (_) => const MainPage()));
+                      }
+                    },
                   ),
                 ),
                 Container(
