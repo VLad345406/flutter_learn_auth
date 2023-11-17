@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -66,11 +67,25 @@ class UserPage extends StatelessWidget {
         ),
         ProjectButton(
           method: () async {
+            try {
+              GoogleSignIn googleSignIn = GoogleSignIn();
+              await googleSignIn.disconnect();
+            } catch (e) {
+              if (kDebugMode) {
+                print(e);
+              }
+            }
             FirebaseAuth.instance.authStateChanges().listen((User? user) {
               user?.delete();
             });
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/login', (Route<dynamic> route) => false);
+            /*final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+            _fireStore.collection('users').doc(user.user!.uid).set({
+              'uid': user.user!.uid,
+              'email': user.user!.email,
+            }, SetOptions(merge: true));
+            _fireStore.collection('users').doc(user.user!.uid).delete();*/
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => const LoginOrRegisterBuilder()));
           },
           label: 'Remove account',
           textColor: Colors.red,

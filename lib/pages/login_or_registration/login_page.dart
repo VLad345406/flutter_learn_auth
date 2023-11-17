@@ -122,8 +122,8 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () async {
                       UserCredential user = await AuthService().signInWithGoogle();
                       if (user.user != null) {
-                        final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-                        _fireStore.collection('users').doc(user.user!.uid).set({
+                        final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+                        fireStore.collection('users').doc(user.user!.uid).set({
                           'uid': user.user!.uid,
                           'email': user.user!.email,
                         }, SetOptions(merge: true));

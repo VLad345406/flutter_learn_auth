@@ -44,12 +44,12 @@ class _MainPageState extends State<MainPage> {
                 })
           ],
         ),
-        //body: _buildUserList(),
-        body: Container(),
+        body: _buildUserList(),
+        //body: Container(),
     );
   }
 
-  Widget _buildUserList(DocumentSnapshot document) {
+  Widget _buildUserList() {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (context, snapshot) {
@@ -73,7 +73,7 @@ class _MainPageState extends State<MainPage> {
 
     if (_auth.currentUser!.email != data['email']) {
       return ListTile(
-        title: data['email'],
+        title: Text(data['email']),
         onTap: () {
           Navigator.push(
             context,
@@ -87,7 +87,7 @@ class _MainPageState extends State<MainPage> {
       );
     }
     else {
-      return const Text("Error!");
+      return Container();
     }
   }
 }
