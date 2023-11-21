@@ -15,37 +15,54 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<void> getUserName() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final data =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    setState(() {
+      userName = data['user_name'];
+    });
+  }
+
+  String userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
   @override
   Widget build(BuildContext context) {
     //final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Chats',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+      appBar: AppBar(
+        title: Text(
+          'Chats $userName',
+          style: const TextStyle(
+            color: Colors.white,
           ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Colors.black,
-          actions: <Widget>[
-            IconButton(
-                icon: const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UserPage()),
-                  );
-                })
-          ],
         ),
-        body: _buildUserList(),
-        //body: Container(),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.black,
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UserPage()),
+                );
+              })
+        ],
+      ),
+      body: _buildUserList(),
+      //body: Container(),
     );
   }
 
@@ -72,8 +89,9 @@ class _MainPageState extends State<MainPage> {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
     if (_auth.currentUser!.email != data['email']) {
+      String receiverUserName = data['user_name'];
       return ListTile(
-        title: Text(data['email']),
+        title: Text(receiverUserName),
         onTap: () {
           Navigator.push(
             context,
@@ -81,12 +99,13 @@ class _MainPageState extends State<MainPage> {
                 builder: (context) => ChatPage(
                       receiverUserEmail: data['email'],
                       receiverUserID: data['uid'],
+                      senderUserName: userName,
+                      receiverUserName: receiverUserName,
                     )),
           );
         },
       );
-    }
-    else {
+    } else {
       return Container();
     }
   }

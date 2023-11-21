@@ -19,12 +19,13 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final emailController = TextEditingController();
-  final phoneController = TextEditingController();
+  final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
   Future registration() async {
     if (emailController.text == '' ||
+        userNameController.text == '' ||
         passwordController.text == '' ||
         confirmPasswordController.text == '') {
       snackBar('Please, input data');
@@ -32,14 +33,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
       snackBar('Wrong confirm password!');
     } else {
       try {
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-        _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+        fireStore.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'email': emailController.text,
+          'user_name': userNameController.text,
         });
         toggle();
         //Navigator.pushNamed(context, '/wait_accept');
@@ -88,11 +91,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     controller: emailController,
                     showVisibleButton: false,
                     label: 'Email'),
-                /*ProjectTextField(
-                controller: phoneController,
-                showVisibleButton: false,
-                label: 'Phone number'
-            ),*/
+                ProjectTextField(
+                    controller: userNameController,
+                    showVisibleButton: false,
+                    label: 'User name'),
                 ProjectTextField(
                     controller: passwordController,
                     showVisibleButton: true,

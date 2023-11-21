@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:learn_auth/classes/mesage.dart';
+import 'package:learn_auth/classes/message.dart';
 
 class ChatService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> sendMessage(String receiverId, String message) async {
+  Future<void> sendMessage(String receiverId, String message, String senderUserName) async {
     final String currentUserId = _firebaseAuth.currentUser!.uid;
-    final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
+    //final String currentUserName = _firebaseAuth.currentUser!.email.toString();
     final Timestamp timestamp = Timestamp.now();
 
     Message newMessage = Message(
       senderId: currentUserId,
-      senderEmail: currentUserEmail,
+      senderUserName: senderUserName,
       receiverId: receiverId,
       message: message,
       timestamp: timestamp,

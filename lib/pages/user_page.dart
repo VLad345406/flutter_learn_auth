@@ -8,13 +8,31 @@ import 'package:learn_auth/pages/login_or_registration/login_or_registration_bui
 
 import '../elements/button.dart';
 
-class UserPage extends StatelessWidget {
+class UserPage extends StatefulWidget {
   const UserPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+  State<UserPage> createState() => _UserPageState();
+}
 
+class _UserPageState extends State<UserPage> {
+  Future<void> getUserName () async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final data = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    setState(() {
+      userName = data['user_name'];
+    });
+  }
+  String userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -35,7 +53,7 @@ class UserPage extends StatelessWidget {
           ),
         ),
         Text(
-          user.email!,
+          userName,
           style: GoogleFonts.roboto(
             fontSize: 20,
             fontWeight: FontWeight.w500,

@@ -44,8 +44,8 @@ class _LoginPageState extends State<LoginPage> {
           password: passwordController.text.trim(),
         );
 
-        final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-        _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+        fireStore.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'email': emailController.text,
         }, SetOptions(merge: true));
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
             ProjectTextField(
                 controller: emailController,
                 showVisibleButton: false,
-                label: 'Email or phone'),
+                label: 'Email'),
             ProjectTextField(
                 controller: passwordController,
                 showVisibleButton: true,
@@ -133,13 +133,13 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                 ),
-                Container(
+                /*Container(
                   padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                   child: IconButton(
                     icon: Image.asset('assets/images/Facebook.png'),
                     onPressed: () {},
                   ),
-                ),
+                ),*/
               ],
             ),
             Center(

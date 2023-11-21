@@ -7,11 +7,15 @@ import 'package:learn_auth/services/chat_service.dart';
 class ChatPage extends StatefulWidget {
   final String receiverUserEmail;
   final String receiverUserID;
+  final String senderUserName;
+  final String receiverUserName;
 
   const ChatPage(
       {super.key,
       required this.receiverUserEmail,
-      required this.receiverUserID});
+      required this.receiverUserID,
+      required this.senderUserName,
+      required this.receiverUserName});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -26,7 +30,7 @@ class _ChatPageState extends State<ChatPage> {
   void sendMessage() async {
     if (_messageEditingController.text.isNotEmpty) {
       await _chatService.sendMessage(
-          widget.receiverUserID, _messageEditingController.text);
+          widget.receiverUserID, _messageEditingController.text, widget.senderUserName);
       _messageEditingController.clear();
     }
   }
@@ -35,7 +39,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverUserEmail),
+        title: Text(widget.receiverUserName),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
@@ -91,7 +95,6 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
     var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
@@ -122,7 +125,7 @@ class _ChatPageState extends State<ChatPage> {
                   : CrossAxisAlignment.start,
           children: [
             Text(
-              data['senderEmail'],
+              data['senderUserName'],
               style: const TextStyle(
                   color: Colors.blue, fontWeight: FontWeight.w700),
             ),
