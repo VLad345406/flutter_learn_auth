@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../elements/button.dart';
 import '../../elements/text_field.dart';
+import '../../services/snack_bar.dart';
 
 class RestorePage extends StatefulWidget {
   const RestorePage({super.key});
@@ -20,27 +21,14 @@ class _RestorePageState extends State<RestorePage> {
     super.dispose();
   }
 
-  void snackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(text),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
   Future restorePassword() async {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
-      snackBar('Password restore link sent! Check your email!');
+      snackBar(context, 'Password restore link sent! Check your email!');
+      Navigator.pop(context);
     }on FirebaseAuthException catch (e) {
-      snackBar(e.message.toString());
-      /*showDialog(context: context, builder: (context) {
-        return AlertDialog(
-          content: Text(e.message.toString()),
-        );
-      });*/
+      snackBar(context, e.message.toString());
     }
   }
 

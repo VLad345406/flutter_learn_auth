@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_auth/pages/user_page.dart';
+import 'package:learn_auth/services/navigator_service.dart';
 
 import 'chat_page.dart';
 
@@ -34,8 +35,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    //final user = FirebaseAuth.instance.currentUser!;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -49,16 +48,12 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.black,
         actions: <Widget>[
           IconButton(
-              icon: const Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const UserPage()),
-                );
-              })
+            icon: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            onPressed: () => navigatorPush(context, const UserPage()),
+          )
         ],
       ),
       body: _buildUserList(),
@@ -68,21 +63,22 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildUserList() {
     return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('users').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text("Error!");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading...");
-          }
+      stream: FirebaseFirestore.instance.collection('users').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Text("Error!");
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: Text("Loading..."));
+        }
 
-          return ListView(
-            children: snapshot.data!.docs
-                .map<Widget>((doc) => _buildUserListItem(doc))
-                .toList(),
-          );
-        });
+        return ListView(
+          children: snapshot.data!.docs
+              .map<Widget>((doc) => _buildUserListItem(doc))
+              .toList(),
+        );
+      },
+    );
   }
 
   Widget _buildUserListItem(DocumentSnapshot document) {
@@ -93,15 +89,14 @@ class _MainPageState extends State<MainPage> {
       return ListTile(
         title: Text(receiverUserName),
         onTap: () {
-          Navigator.push(
+          navigatorPush(
             context,
-            MaterialPageRoute(
-                builder: (context) => ChatPage(
-                      receiverUserEmail: data['email'],
-                      receiverUserID: data['uid'],
-                      senderUserName: userName,
-                      receiverUserName: receiverUserName,
-                    )),
+            ChatPage(
+              receiverUserEmail: data['email'],
+              receiverUserID: data['uid'],
+              senderUserName: userName,
+              receiverUserName: receiverUserName,
+            ),
           );
         },
       );

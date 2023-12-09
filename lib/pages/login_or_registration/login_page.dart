@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
 import 'package:learn_auth/elements/text_field.dart';
 import 'package:learn_auth/pages/login_or_registration/restore_page.dart';
-import 'package:learn_auth/pages/main_page.dart';
-import 'package:learn_auth/services/auth_service.dart';
+
+import '../../services/sigh_in.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onClickedSignUp;
@@ -21,43 +19,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  void snackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(text),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
-  signIn() async {
-    if (emailController.text == '' || passwordController.text == '') {
-      snackBar("Input email and password!");
-    } else {
-      try {
-        setState(() {
-          const Center(child: CircularProgressIndicator());
-        });
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
-
-        final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-        fireStore.collection('users').doc(userCredential.user!.uid).set({
-          'uid': userCredential.user!.uid,
-          'email': emailController.text,
-        }, SetOptions(merge: true));
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const MainPage()));
-      } on FirebaseAuthException catch (e) {
-        snackBar(e.message.toString());
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,12 +53,14 @@ class _LoginPageState extends State<LoginPage> {
                 showVisibleButton: true,
                 label: 'Password'),
             ProjectButton(
-              method: signIn,
+              method: () {
+                signIn(context, emailController, passwordController);
+              },
               label: 'Log in',
               textColor: Colors.black,
             ),
             //"continue with" text
-            Align(
+            /*Align(
               alignment: Alignment.topCenter,
               child: Container(
                 margin: const EdgeInsets.only(top: 30),
@@ -120,28 +83,38 @@ class _LoginPageState extends State<LoginPage> {
                   child: IconButton(
                     icon: Image.asset('assets/images/Google.png'),
                     onPressed: () async {
-                      UserCredential user = await AuthService().signInWithGoogle();
+                      UserCredential user =
+                          await AuthService().signInWithGoogle();
                       if (user.user != null) {
-                        final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-                        fireStore.collection('users').doc(user.user!.uid).set({
-                          'uid': user.user!.uid,
-                          'email': user.user!.email,
-                        }, SetOptions(merge: true));
-                        Navigator.pushReplacement(
-                            context, MaterialPageRoute(builder: (_) => const MainPage()));
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(user.user!.uid)
+                            .snapshots()
+                            .listen(
+                          (snapshot) {
+                            if (snapshot.exists) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const MainPage(),
+                                ),
+                              );
+                            } else {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const InputUserNamePage(),
+                                ),
+                              );
+                            }
+                          },
+                        );
                       }
                     },
                   ),
                 ),
-                /*Container(
-                  padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-                  child: IconButton(
-                    icon: Image.asset('assets/images/Facebook.png'),
-                    onPressed: () {},
-                  ),
-                ),*/
               ],
-            ),
+            ),*/
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16),
@@ -184,10 +157,12 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextSpan(
                         recognizer: TapGestureRecognizer()
-                          ..onTap = (){Navigator.push(
-                              context, MaterialPageRoute(
-                              builder: (context) => const RestorePage())
-                          );},
+                          ..onTap = () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const RestorePage()));
+                          },
                         text: 'Restore',
                         style: GoogleFonts.roboto(
                           color: Colors.black,

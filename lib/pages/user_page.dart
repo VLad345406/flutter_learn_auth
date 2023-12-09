@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:learn_auth/pages/login_or_registration/login_or_registration_builder.dart';
 
 import '../elements/button.dart';
+import '../services/user_page_services.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -65,46 +63,12 @@ class _UserPageState extends State<UserPage> {
           textColor: Colors.black,
         ),
         ProjectButton(
-          method: () async {
-            try {
-              GoogleSignIn googleSignIn = GoogleSignIn();
-              await googleSignIn.disconnect();
-            } catch (e) {
-              if (kDebugMode) {
-                print(e);
-              }
-            }
-            await FirebaseAuth.instance.signOut();
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginOrRegisterBuilder()),
-                (route) => false);
-          },
+          method: () => logOut(context),
           label: 'Log out',
           textColor: Colors.red,
         ),
         ProjectButton(
-          method: () async {
-            try {
-              GoogleSignIn googleSignIn = GoogleSignIn();
-              await googleSignIn.disconnect();
-            } catch (e) {
-              if (kDebugMode) {
-                print(e);
-              }
-            }
-            FirebaseAuth.instance.authStateChanges().listen((User? user) {
-              user?.delete();
-            });
-            /*final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-            _fireStore.collection('users').doc(user.user!.uid).set({
-              'uid': user.user!.uid,
-              'email': user.user!.email,
-            }, SetOptions(merge: true));
-            _fireStore.collection('users').doc(user.user!.uid).delete();*/
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => const LoginOrRegisterBuilder()));
-          },
+          method: () => removeAccount(context),
           label: 'Remove account',
           textColor: Colors.red,
         ),

@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_auth/elements/button.dart';
+import 'package:learn_auth/pages/login_or_registration/login_or_registration_builder.dart';
 import 'package:learn_auth/pages/main_page.dart';
 
-class WaitAcceptEmailPage extends StatefulWidget {
-  final VoidCallback onClickedCansel;
+import '../../services/accept_email_services.dart';
 
-  const WaitAcceptEmailPage({super.key, required this.onClickedCansel});
+class WaitAcceptEmailPage extends StatefulWidget {
+  const WaitAcceptEmailPage({super.key});
 
   @override
   State<WaitAcceptEmailPage> createState() => _WaitAcceptEmailPageState();
@@ -25,7 +26,7 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
     if (!isEmailVerified) {
-      sendVerificationEmail();
+      sendVerificationEmail(context);
 
       timer = Timer.periodic(
         const Duration(seconds: 3),
@@ -42,24 +43,6 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
     });
 
     if (isEmailVerified) timer?.cancel();
-  }
-
-  Future sendVerificationEmail() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser!;
-      await user.sendEmailVerification();
-    } catch (e) {
-      snackBar(e.toString());
-    }
-  }
-
-  void snackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(text),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   @override
@@ -84,8 +67,8 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
                 ),
               ),
               ProjectButton(
-                  //method: sendVerificationEmail,
-                method: (){},
+                //method: sendVerificationEmail,
+                method: () {},
                 label: 'Resent Email',
                 textColor: Colors.black,
               ),
@@ -94,11 +77,23 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
                 child: TextButton(
                   onPressed: () {
                     try {
-                      FirebaseAuth.instance.signOut();
+                      // FirebaseAuth.instance.signOut();
+                      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+                        user?.delete();
+                      });
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const LoginOrRegisterBuilder(),
+                        ),
+                      );
                     } catch (e) {
-                      widget.onClickedCansel;
-                      /*Navigator.pushAndRemoveUntil(
-                          context, '/home' as Route<Object?>, (route) => false);*/
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const LoginOrRegisterBuilder(),
+                        ),
+                      );
                     }
                   },
                   child: const Text(
