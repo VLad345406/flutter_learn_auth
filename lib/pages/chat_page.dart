@@ -104,40 +104,59 @@ class _ChatPageState extends State<ChatPage> {
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    return Container(
-      alignment: alignment,
-      child: Container(
-        margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
-        padding:
-            const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 16),
-        decoration: BoxDecoration(
-          color: Colors.black12,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(20),
-            topRight: const Radius.circular(20),
-            bottomLeft: (alignment == Alignment.centerRight)
-                ? const Radius.circular(20)
-                : const Radius.circular(0),
-            bottomRight: (alignment == Alignment.centerLeft)
-                ? const Radius.circular(20)
-                : const Radius.circular(0),
+    return Row(
+      mainAxisAlignment: alignment == Alignment.centerRight
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        alignment == Alignment.centerLeft
+            ? const Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: CircleAvatar(
+                  radius: 20,
+                ),
+              )
+            : Container(),
+        Container(
+          alignment: alignment,
+          child: Container(
+            margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
+            padding:
+                const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 16),
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width - 100,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(20),
+                topRight: const Radius.circular(20),
+                bottomLeft: (alignment == Alignment.centerRight)
+                    ? const Radius.circular(20)
+                    : const Radius.circular(0),
+                bottomRight: (alignment == Alignment.centerLeft)
+                    ? const Radius.circular(20)
+                    : const Radius.circular(0),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment:
+                  (data['senderId'] == _firebaseAuth.currentUser!.uid)
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+              children: [
+                Text(
+                  data['senderUserName'],
+                  style: const TextStyle(
+                      color: Colors.blue, fontWeight: FontWeight.w700),
+                ),
+                Text(data['message']),
+              ],
+            ),
           ),
         ),
-        child: Column(
-          crossAxisAlignment:
-              (data['senderId'] == _firebaseAuth.currentUser!.uid)
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
-          children: [
-            Text(
-              data['senderUserName'],
-              style: const TextStyle(
-                  color: Colors.blue, fontWeight: FontWeight.w700),
-            ),
-            Text(data['message']),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }
