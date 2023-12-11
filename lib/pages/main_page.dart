@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:learn_auth/pages/user_page.dart';
 import 'package:learn_auth/services/navigator_service.dart';
 
@@ -37,22 +38,26 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Chats $userName',
-          style: const TextStyle(
-            color: Colors.white,
-          ),
+        title: Animate(
+          child: Text(
+            'Chats $userName',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ).animate().fade(),
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.black,
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            onPressed: () => navigatorPush(context, const UserPage()),
+          Animate(
+            child: IconButton(
+              icon: const Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              onPressed: () => navigatorPush(context, const UserPage()),
+            ).animate().fade(),
           )
         ],
       ),
@@ -72,10 +77,12 @@ class _MainPageState extends State<MainPage> {
           return const Center(child: Text("Loading..."));
         }
 
-        return ListView(
-          children: snapshot.data!.docs
-              .map<Widget>((doc) => _buildUserListItem(doc))
-              .toList(),
+        return Animate(
+          child: ListView(
+            children: snapshot.data!.docs
+                .map<Widget>((doc) => _buildUserListItem(doc))
+                .toList().animate().fade().moveY(),
+          ),
         );
       },
     );

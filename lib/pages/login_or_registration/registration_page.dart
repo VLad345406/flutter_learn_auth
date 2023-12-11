@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_auth/elements/button.dart';
+import 'package:learn_auth/elements/logo_image.dart';
 
 import '../../elements/text_field.dart';
 import '../../services/registration.dart';
@@ -33,78 +35,82 @@ class _RegistrationPageState extends State<RegistrationPage> {
         elevation: 0,
       ),
       body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          primary: false,
-          children: [
-            Center(
-              child: Text(
-                'Registration',
-                style: GoogleFonts.roboto(
-                  color: Colors.black,
-                  fontSize: 40,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ProjectTextField(
-                controller: emailController,
-                showVisibleButton: false,
-                label: 'Email'),
-            ProjectTextField(
-                controller: userNameController,
-                showVisibleButton: false,
-                label: 'User name'),
-            ProjectTextField(
-                controller: passwordController,
-                showVisibleButton: true,
-                label: 'Password'),
-            ProjectTextField(
-                controller: confirmPasswordController,
-                showVisibleButton: true,
-                label: 'Confirm password'),
-            ProjectButton(
-              method: () {
-                registration(
-                  context,
-                  emailController,
-                  userNameController,
-                  passwordController,
-                  confirmPasswordController,
-                );
-              },
-              label: 'Registration',
-              textColor: Colors.black,
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Have account? ',
-                    style: GoogleFonts.roboto(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    children: [
-                      TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = widget.onClickedSignIn,
-                        text: 'Login!',
-                        style: GoogleFonts.roboto(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
+        child: Animate(
+          child: ListView(
+            shrinkWrap: true,
+            primary: false,
+            children: [
+              const LogoImage(),
+              Center(
+                child: Text(
+                  'Registration',
+                  style: GoogleFonts.roboto(
+                    color: Colors.black,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
-            ),
-          ],
+              ProjectTextField(
+                  controller: emailController,
+                  showVisibleButton: false,
+                  label: 'Email'),
+              ProjectTextField(
+                  controller: userNameController,
+                  showVisibleButton: false,
+                  label: 'User name'),
+              ProjectTextField(
+                  controller: passwordController,
+                  showVisibleButton: true,
+                  label: 'Password'),
+              ProjectTextField(
+                  controller: confirmPasswordController,
+                  showVisibleButton: true,
+                  label: 'Confirm password'),
+              ProjectButton(
+                method: () {
+                  registration(
+                    context,
+                    emailController,
+                    userNameController,
+                    passwordController,
+                    confirmPasswordController,
+                  );
+                },
+                label: 'Registration',
+                textColor: Colors.black,
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Have account? ',
+                      style: GoogleFonts.roboto(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      children: [
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = widget.onClickedSignIn,
+                          text: 'Login!',
+                          style: GoogleFonts.roboto(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ).animate()
+              .fadeIn(duration: const Duration(milliseconds: 500)),
         ),
       ),
     );

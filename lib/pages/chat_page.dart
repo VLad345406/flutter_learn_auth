@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:learn_auth/elements/text_field.dart';
 import 'package:learn_auth/services/chat_service.dart';
 
@@ -29,8 +30,8 @@ class _ChatPageState extends State<ChatPage> {
 
   void sendMessage() async {
     if (_messageEditingController.text.isNotEmpty) {
-      await _chatService.sendMessage(
-          widget.receiverUserID, _messageEditingController.text, widget.senderUserName);
+      await _chatService.sendMessage(widget.receiverUserID,
+          _messageEditingController.text, widget.senderUserName);
       _messageEditingController.clear();
     }
   }
@@ -39,33 +40,35 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverUserName),
+        title: Animate(child: Text(widget.receiverUserName).animate().fade()),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
       body: Column(
         children: [
           Expanded(child: _buildMessageItemList()),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ProjectTextField(
-                    controller: _messageEditingController,
-                    showVisibleButton: false,
-                    label: '',
+          Animate(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ProjectTextField(
+                      controller: _messageEditingController,
+                      showVisibleButton: false,
+                      label: '',
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: sendMessage,
-                  icon: const Icon(
-                    Icons.send,
-                    size: 40,
+                  IconButton(
+                    onPressed: sendMessage,
+                    icon: const Icon(
+                      Icons.send,
+                      size: 40,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ).animate().fade(),
           ),
         ],
       ),
@@ -85,10 +88,12 @@ class _ChatPageState extends State<ChatPage> {
             return const Center(child: Text('Loading...'));
           }
 
-          return ListView(
-            children: snapshot.data!.docs
-                .map((document) => _buildMessageItem(document))
-                .toList(),
+          return Animate(
+            child: ListView(
+              children: snapshot.data!.docs
+                  .map((document) => _buildMessageItem(document))
+                  .toList(),
+            ).animate().moveY(begin: 1, end: 0).fade(),
           );
         });
   }

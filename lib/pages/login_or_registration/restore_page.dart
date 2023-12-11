@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../elements/button.dart';
+import '../../elements/logo_image.dart';
 import '../../elements/text_field.dart';
 import '../../services/snack_bar.dart';
 
@@ -38,20 +41,37 @@ class _RestorePageState extends State<RestorePage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Messenger'),
+        centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ProjectTextField(
-              controller: _emailController,
-              showVisibleButton: false,
-              label: 'Email'),
-          ProjectButton(
-            method: restorePassword,
-            label: 'Next',
-            textColor: Colors.black,
-          ),
-        ],
+      body: Center(
+        child: Animate(
+          child: ListView(
+            primary: false,
+            shrinkWrap: true,
+            children: [
+              const LogoImage(),
+              Center(
+                child: Text(
+                  'Restore password',
+                  style: GoogleFonts.roboto(
+                    color: Colors.black,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              ProjectTextField(
+                  controller: _emailController,
+                  showVisibleButton: false,
+                  label: 'Email'),
+              ProjectButton(
+                method: restorePassword,
+                label: 'Next',
+                textColor: Colors.black,
+              ),
+            ],
+          ).animate().fadeIn(duration: const Duration(milliseconds: 500)),
+        ),
       ),
     );
   }
