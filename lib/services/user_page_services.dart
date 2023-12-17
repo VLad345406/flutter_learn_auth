@@ -41,7 +41,6 @@ void removeAccount(BuildContext context) async {
   FirebaseAuth.instance.authStateChanges().listen((User? user) {
     user?.delete();
   });
-  FirebaseAuth.instance.signOut();
   navigatorPushReplacement(
     context,
     const LoginOrRegisterBuilder(),
