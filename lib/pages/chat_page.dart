@@ -28,7 +28,7 @@ class _ChatPageState extends State<ChatPage> {
       TextEditingController();
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   void sendMessage() async {
     if (_messageEditingController.text.isNotEmpty) {

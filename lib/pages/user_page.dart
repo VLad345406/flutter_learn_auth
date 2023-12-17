@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learn_auth/elements/avatar.dart';
+import 'package:learn_auth/pages/change_password.dart';
 
 import '../elements/button.dart';
 import '../services/image_picker.dart';
+import '../services/navigator_service.dart';
 import '../services/user_page_services.dart';
 
 class UserPage extends StatefulWidget {
@@ -80,7 +82,7 @@ class _UserPageState extends State<UserPage> {
           ),
         ),
         ProjectButton(
-          method: () {},
+          method: () => navigatorPush(context, const ChangePassword()),
           label: 'Change password',
           textColor: Colors.black,
         ),
