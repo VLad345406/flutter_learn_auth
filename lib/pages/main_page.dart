@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:learn_auth/elements/avatar.dart';
 import 'package:learn_auth/pages/user_page.dart';
 import 'package:learn_auth/services/navigator_service.dart';
 
@@ -81,7 +82,10 @@ class _MainPageState extends State<MainPage> {
           child: ListView(
             children: snapshot.data!.docs
                 .map<Widget>((doc) => _buildUserListItem(doc))
-                .toList().animate().fade().moveY(),
+                .toList()
+                .animate()
+                .fade()
+                .moveY(),
           ),
         );
       },
@@ -94,7 +98,13 @@ class _MainPageState extends State<MainPage> {
     if (_auth.currentUser!.email != data['email']) {
       String receiverUserName = data['user_name'];
       return ListTile(
-        title: Text(receiverUserName),
+        title: Row(
+          children: [
+            ProjectUserAvatar(userAvatarLink: data['image_link'], radius: 20),
+            const SizedBox(width: 20),
+            Text(receiverUserName)
+          ],
+        ),
         onTap: () {
           navigatorPush(
             context,

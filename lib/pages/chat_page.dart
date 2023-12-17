@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:learn_auth/elements/avatar.dart';
 import 'package:learn_auth/elements/text_field.dart';
 import 'package:learn_auth/services/chat_service.dart';
 
@@ -27,6 +28,7 @@ class _ChatPageState extends State<ChatPage> {
       TextEditingController();
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  ScrollController _scrollController = ScrollController();
 
   void sendMessage() async {
     if (_messageEditingController.text.isNotEmpty) {
@@ -34,6 +36,35 @@ class _ChatPageState extends State<ChatPage> {
           _messageEditingController.text, widget.senderUserName);
       _messageEditingController.clear();
     }
+  }
+
+  String receiverAvatarLink = '';
+
+  Future<void> getReceiverUserData() async {
+    final userId = widget.receiverUserID;
+    final data =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    setState(() {
+      receiverAvatarLink = data['image_link'];
+    });
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getReceiverUserData();
   }
 
   @override
@@ -49,7 +80,11 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(child: _buildMessageItemList()),
           Animate(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                bottom: 16,
+              ),
               child: Row(
                 children: [
                   Expanded(
@@ -90,6 +125,7 @@ class _ChatPageState extends State<ChatPage> {
 
           return Animate(
             child: ListView(
+              controller: _scrollController,
               children: snapshot.data!.docs
                   .map((document) => _buildMessageItem(document))
                   .toList(),
@@ -103,7 +139,7 @@ class _ChatPageState extends State<ChatPage> {
     var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
-
+    _scrollToBottom();
     return Row(
       mainAxisAlignment: alignment == Alignment.centerRight
           ? MainAxisAlignment.end
@@ -111,9 +147,10 @@ class _ChatPageState extends State<ChatPage> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         alignment == Alignment.centerLeft
-            ? const Padding(
-                padding: EdgeInsets.only(left: 16),
-                child: CircleAvatar(
+            ? Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: ProjectUserAvatar(
+                  userAvatarLink: receiverAvatarLink,
                   radius: 20,
                 ),
               )

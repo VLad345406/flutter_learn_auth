@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:learn_auth/elements/avatar.dart';
 
 import '../elements/button.dart';
+import '../services/image_picker.dart';
 import '../services/user_page_services.dart';
 
 class UserPage extends StatefulWidget {
@@ -14,19 +19,32 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  Future<void> getUserName () async {
+  Future<void> getUserData() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    final data = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final data =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
     setState(() {
       userName = data['user_name'];
+      userAvatarLink = data['image_link'];
     });
   }
+
   String userName = '';
+  String userAvatarLink = '';
+
+  void selectImage() async {
+    Uint8List image = await pickImage(ImageSource.gallery);
+    uploadImageToStorage(userName, image);
+    await saveData(FirebaseAuth.instance.currentUser!.email.toString(),
+        FirebaseAuth.instance.currentUser!.uid.toString(), userName, image);
+    getUserData();
+  }
 
   @override
   void initState() {
     super.initState();
-    getUserName();
+    getUserData();
   }
 
   @override
@@ -44,10 +62,14 @@ class _UserPageState extends State<UserPage> {
         backgroundColor: Colors.black,
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16),
-          child: CircleAvatar(
-            radius: 50,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: GestureDetector(
+            onTap: selectImage,
+            child: ProjectUserAvatar(
+              userAvatarLink: userAvatarLink,
+              radius: 50,
+            ),
           ),
         ),
         Text(

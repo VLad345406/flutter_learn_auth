@@ -29,16 +29,11 @@ Future registration(
       );
       final FirebaseFirestore fireStore = FirebaseFirestore.instance;
       navigatorPushReplacement(context, const WaitAcceptEmailPage());
-      /*Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const WaitAcceptEmailPage(),
-        ),
-      );*/
       fireStore.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'email': emailController.text,
         'user_name': userNameController.text,
+        'image_link' : '',
       });
       //Navigator.pushNamed(context, '/wait_accept');
     } on FirebaseAuthException catch (e) {

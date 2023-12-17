@@ -26,12 +26,6 @@ signIn(BuildContext context, TextEditingController emailController,
 
       // ignore: use_build_context_synchronously
       navigatorPushReplacement(context, const MainPage());
-      /*Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const MainPage(),
-        ),
-      );*/
     } on FirebaseAuthException catch (e) {
       snackBar(context, e.message.toString());
     }
