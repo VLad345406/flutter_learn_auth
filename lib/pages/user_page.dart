@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learn_auth/elements/avatar.dart';
-import 'package:learn_auth/pages/change_password.dart';
+import 'package:learn_auth/pages/change_password_page.dart';
 
 import '../elements/button.dart';
 import '../services/image_picker.dart';

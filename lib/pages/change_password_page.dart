@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_auth/elements/button.dart';
 import 'package:learn_auth/elements/text_field.dart';
-import 'package:learn_auth/services/snack_bar.dart';
+
+import '../services/change_password_service.dart';
 
 class ChangePassword extends StatelessWidget {
   const ChangePassword({super.key});
@@ -45,36 +45,12 @@ class ChangePassword extends StatelessWidget {
               label: 'Repeat new password',
             ),
             ProjectButton(
-              method: () async {
-                if (oldPassword.text.isEmpty ||
-                    newPassword.text.isEmpty ||
-                    repeatNewPassword.text.isEmpty) {
-                  snackBar(context, 'Not enough information!');
-                } else {
-                  bool checkOldPassword = false;
-                  final AuthCredential credential;
-                  final user = FirebaseAuth.instance.currentUser;
-                  try {
-                    credential = EmailAuthProvider.credential(
-                      email: user!.email.toString(),
-                      password: oldPassword.text,
-                    );
-                    await user.reauthenticateWithCredential(credential);
-                    checkOldPassword = true;
-                  } on Exception {
-                    snackBar(context, 'Wrong old password!');
-                  }
-                  if (checkOldPassword) {
-                    if (newPassword.text != repeatNewPassword.text) {
-                      snackBar(context, 'New password and repeat not equal!');
-                    } else {
-                      await user?.updatePassword(newPassword.text);
-                      Navigator.pop(context);
-                      snackBar(context, 'Success change!');
-                    }
-                  }
-                }
-              },
+              method: () => changePassword(
+                context,
+                oldPassword,
+                newPassword,
+                repeatNewPassword,
+              ),
               label: 'Save',
               textColor: Colors.black,
             ),
