@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_auth/elements/button.dart';
@@ -38,11 +39,13 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
   Future checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser!.reload();
 
-    setState(() {
-      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    });
+    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
-    if (isEmailVerified) timer?.cancel();
+    if (isEmailVerified) {
+      setState(() {
+        timer?.cancel();
+      });
+    }
   }
 
   @override
@@ -68,17 +71,26 @@ class _WaitAcceptEmailPageState extends State<WaitAcceptEmailPage> {
               ),
               ProjectButton(
                 //method: sendVerificationEmail,
-                method: () {},
+                method: () {
+                  sendVerificationEmail(context);
+                },
                 label: 'Resent Email',
                 textColor: Colors.black,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     try {
                       // FirebaseAuth.instance.signOut();
-                      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+                      final userId = FirebaseAuth.instance.currentUser!.uid;
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(userId)
+                          .delete();
+                      FirebaseAuth.instance
+                          .authStateChanges()
+                          .listen((User? user) {
                         user?.delete();
                       });
                       Navigator.pushReplacement(

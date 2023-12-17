@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:learn_auth/pages/login_or_registration/wait_accept_email_page.dart';
 import 'package:learn_auth/services/password_rules.dart';
 import 'package:learn_auth/services/snack_bar.dart';
-
-import 'navigator_service.dart';
 
 Future registration(
   BuildContext context,
@@ -31,14 +28,12 @@ Future registration(
           password: passwordController.text.trim(),
         );
         final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-        navigatorPushReplacement(context, const WaitAcceptEmailPage());
         fireStore.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'email': emailController.text,
           'user_name': userNameController.text,
           'image_link': '',
         });
-        //Navigator.pushNamed(context, '/wait_accept');
       } on FirebaseAuthException catch (e) {
         snackBar(context, e.message.toString());
       }
